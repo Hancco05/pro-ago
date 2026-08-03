@@ -1,1 +1,52 @@
-standby!
+=============================================================
+ PLAN DE PROYECTO: APP TAREAS + RRHH (Escritorio + Correo)
+=============================================================
+
+1. OBJETIVO PRINCIPAL
+   - Crear una aplicación de escritorio con icono propio.
+   - Gestión de tareas diarias + información de RRHH (vacaciones, avisos).
+   - Conectada a correo (Outlook/Gmail) para enviar notificaciones.
+
+2. DECISIÓN SOAP vs REST
+   - ELECCIÓN: API REST.
+   - Motivos: Más rápida, usa JSON (ideal para React), estándar actual,
+     fácil integración con Gmail/Outlook.
+
+3. STACK TECNOLÓGICO (Recomendado)
+   - FRONTEND (Interfaz): React.js (para construir las pantallas).
+   - BACKEND (Lógica y BD): Node.js con Express.
+   - ESCRITORIO (Icono y ejecutable): Electron (envuelve React y Node).
+   - BASE DE DATOS: PostgreSQL (para guardar usuarios, tareas, RRHH).
+   - CORREO: Librería Nodemailer (SMTP) para enviar correos básicos.
+     (Opcional) API REST de Microsoft Graph / Gmail para integración avanzada.
+
+4. ARQUITECTURA INTERNA (Flujo de trabajo)
+   - El usuario abre el .exe (icono) -> Se inicia Electron.
+   - Electron carga la interfaz hecha en React.
+   - Cuando el usuario pulsa "Enviar notificación" o "Recordar":
+     -> React envía un mensaje (IPC) al proceso principal de Electron.
+     -> Node.js (en Electron) usa Nodemailer para enviar el correo.
+     -> Los datos de tareas/RRHH se guardan/leen desde PostgreSQL.
+
+5. FUNCIONALIDADES MÍNIMAS (MVP - Versión 1.0)
+   - Login con usuario/contraseña (seguridad básica).
+   - Panel de Tareas: Crear, editar, marcar como hecha, eliminar.
+   - Panel RRHH: Ver avisos importantes, días de vacaciones restantes.
+   - Botón "Enviar recordatorio" que manda un correo al empleado.
+   - Notificación nativa de Windows (pop-up) cuando se complete una tarea.
+
+6. PLAN DE ACCIÓN (Pasos a seguir)
+   Paso 1: Instalar Node.js y PostgreSQL.
+   Paso 2: Crear proyecto base con `npm init` e instalar React + Electron.
+   Paso 3: Diseñar la base de datos (tablas: usuarios, tareas, avisos_rrhh).
+   Paso 4: Crear el backend con Express (APIs REST: /tareas, /avisos, /enviar-correo).
+   Paso 5: Crear la interfaz en React y conectar con las APIs.
+   Paso 6: Integrar Electron para generar el ejecutable con icono personalizado.
+   Paso 7: Probar el envío de correos con Nodemailer (usar Gmail/Outlook).
+   Paso 8: Empaquetar con `electron-builder` para generar el .exe.
+
+7. RECOMENDACIONES FINALES
+   - Usa variables de entorno (.env) para ocultar contraseñas del correo.
+   - Si usas Gmail, activa la "Contraseña de aplicación" (no uses tu clave personal).
+   - Empieza por el envío de correos básico y luego añade la interfaz bonita.
+   - Guarda este plan y ve tachando los pasos a medida que avanzas.
