@@ -20,3 +20,9 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+if __name__ == "__main__":
+    # ... código existente de manage.py ...
+    # Al final, justo antes de main():
+    import subprocess
+    subprocess.Popen(['python', 'tareas_programadas.py'], creationflags=subprocess.CREATE_NEW_CONSOLE)
