@@ -50,3 +50,38 @@
    - Si usas Gmail, activa la "Contraseña de aplicación" (no uses tu clave personal).
    - Empieza por el envío de correos básico y luego añade la interfaz bonita.
    - Guarda este plan y ve tachando los pasos a medida que avanzas.
+
+
+__________________________________________________________________________________________________
+----------------------------- ESTRUCTURA DEL PROYECTO --------------------------------------------
+__________________________________________________________________________________________________
+
+
+Workspace/
+├── mi-app-rrhh/                     # 📦 Backend (Django)
+│   ├── core/                        # Configuración principal
+│   ├── gestion_tareas/              # App de tareas
+│   ├── info_rrhh/                   # App de RRHH
+│   ├── venv/                        # Entorno virtual de Python
+│   ├── db.sqlite3                   # Base de datos
+│   ├── manage.py                    # Comandos de Django
+│   ├── tareas_programadas.py        # Script de automatización
+│   ├── requirements.txt             # (Pendiente) Dependencias Python
+│   └── .env                         # Variables de entorno (correo, secret key)
+│
+├── mi-app-frontend/                 # 🎨 Frontend (React + Electron)
+│   ├── public/                      # Archivos estáticos (iconos, index.html)
+│   │   └── icon.ico                 # Icono de la aplicación
+│   ├── src/
+│   │   ├── components/              # Componentes React (Login, Tareas, RRHH)
+│   │   ├── api.js                   # Configuración de axios (URL base del backend)
+│   │   ├── App.jsx                  # Componente principal con rutas
+│   │   └── main.jsx                 # Punto de entrada de React
+│   ├── main.js                      # Proceso principal de Electron
+│   ├── preload.js                   # Precarga de Electron (seguridad)
+│   ├── package.json                 # Dependencias Node.js (React, Vite, Electron)
+│   ├── vite.config.js               # Configuración de Vite
+│   └── .env                         # Variables de entorno (URL del backend)
+│
+├── docker-compose.yml               # (Opcional) Orquestación de contenedores
+└── README.md                        # Documentación del proyecto
