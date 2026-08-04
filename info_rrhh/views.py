@@ -8,6 +8,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .utils import enviar_notificacion
 from .models import Empleado
+from .utils import enviar_correo
 
 class EmpleadoViewSet(viewsets.ModelViewSet):
     queryset = Empleado.objects.all()
@@ -42,3 +43,27 @@ def enviar_correo_empleado(request):
         return Response({"mensaje": f"Correo enviado a {email}"}, status=200)
     else:
         return Response({"error": "Error al enviar el correo"}, status=500)
+
+
+@api_view(['POST'])
+def enviar_correo_endpoint(request):
+    """
+    Endpoint para enviar un correo manualmente.
+    Espera un JSON con: destinatario, asunto, mensaje
+    """
+    data = request.data
+    destinatario = data.get('destinatario')
+    asunto = data.get('asunto')
+    mensaje = data.get('mensaje')
+
+    if not all([destinatario, asunto, mensaje]):
+        return Response(
+            {'error': 'Faltan campos obligatorios: destinatario, asunto, mensaje'},
+            status=400
+        )
+
+    exito = enviar_correo(destinatario, asunto, mensaje)
+    if exito:
+        return Response({'mensaje': 'Correo enviado correctamente'}, status=200)
+    else:
+        return Response({'error': 'No se pudo enviar el correo'}, status=500)

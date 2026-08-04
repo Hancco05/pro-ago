@@ -20,3 +20,21 @@ def enviar_notificacion(destinatario, asunto, mensaje):
     except Exception as e:
         print(f"Error al enviar correo: {e}")
         return False
+
+def enviar_correo(destinatario, asunto, mensaje):
+    """
+    Envía un correo usando la configuración de Django.
+    Retorna True si se envió correctamente, False si falló.
+    """
+    try:
+        send_mail(
+            asunto,
+            mensaje,
+            settings.EMAIL_HOST_USER,   # De quien envía
+            [destinatario],
+            fail_silently=False,
+        )
+        return True
+    except Exception as e:
+        print(f"Error al enviar correo: {e}")
+        return False
