@@ -1,48 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import api from './services/api';
-import './App.css';
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+
+const ProtectedRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  if (loading) return <div>Cargando...</div>;
+  if (!user) return <Navigate to="/login" />;
+  return children;
+};
 
 function App() {
-  const [tareas, setTareas] = useState([]);
-  const [cargando, setCargando] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    api.get('tareas/tareas/')
-      .then(response => {
-        setTareas(response.data);
-        setCargando(false);
-        console.log('✅ Datos recibidos:', response.data);
-      })
-      .catch(error => {
-        console.error('❌ Error al conectar:', error);
-        setError('No se pudo conectar con el backend. Asegúrate de que Django esté corriendo.');
-        setCargando(false);
-      });
-  }, []);
-
-  if (cargando) return <div>Cargando tareas...</div>;
-  if (error) return <div style={{ color: 'red' }}>❌ {error}</div>;
-
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial' }}>
-      <h1>📋 Mis Tareas</h1>
-      {tareas.length === 0 ? (
-        <p>No hay tareas. Crea una desde el panel de administración de Django.</p>
-      ) : (
-        <ul>
-          {tareas.map(tarea => (
-            <li key={tarea.id} style={{ marginBottom: '10px' }}>
-              <strong>{tarea.titulo}</strong>
-              <br />
-              <small>{tarea.descripcion || 'Sin descripción'}</small>
-              <br />
-              <span>{tarea.completada ? '✅ Completada' : '⏳ Pendiente'}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/" element={<Navigate to="/dashboard" />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
