@@ -120,11 +120,16 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# Configuración CORS
 CORS_ALLOW_ALL_ORIGINS = True  # Solo para desarrollo
+# Si luego quieres ser más restrictivo, puedes cambiar esto a False y usar esto:
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:5173",
+# ]
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',  # Por ahora permitimos todo
+        'rest_framework.permissions.AllowAny',
     ]
 }
 
