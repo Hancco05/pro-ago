@@ -24,18 +24,19 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (username, password) => {
-    try {
-      const response = await api.post('token/', { username, password });
-      const { access } = response.data;
-      localStorage.setItem('token', access);
-      api.defaults.headers.common['Authorization'] = `Bearer ${access}`;
-      const decoded = jwtDecode(access);
-      setUser(decoded);
-      return { success: true };
-    } catch (error) {
-      return { success: false, error: 'Credenciales inválidas' };
-    }
-  };
+  try {
+    const response = await api.post('token/', { username, password });
+    const { access } = response.data;
+    localStorage.setItem('token', access);
+    api.defaults.headers.common['Authorization'] = `Bearer ${access}`;
+    const decoded = jwtDecode(access);
+    setUser(decoded);
+    return { success: true };
+  } catch (error) {
+    console.error('Error en login:', error.response?.data || error.message);
+    return { success: false, error: 'Credenciales inválidas' };
+  }
+};
 
   const logout = () => {
     localStorage.removeItem('token');
