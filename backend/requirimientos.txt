@@ -86,4 +86,4 @@ Workspace/
 ├── docker-compose.yml               # (Opcional) Orquestación de contenedores
 └── README.md                        # Documentación del proyecto
 
-Project!!!!!!
+Project!
