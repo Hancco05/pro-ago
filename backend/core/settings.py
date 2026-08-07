@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',  # <-- Añadir esta línea
     'corsheaders', 
     'gestion_tareas',
     'info_rrhh',
@@ -128,9 +129,12 @@ CORS_ALLOW_ALL_ORIGINS = True  # Solo para desarrollo
 # ]
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
-    ]
+        'rest_framework.permissions.AllowAny',  # Permitir login sin autenticación previa
+    ],
 }
 
 # Configuración de correo (Gmail)
