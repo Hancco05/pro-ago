@@ -9,10 +9,12 @@ from rest_framework.response import Response
 from .utils import enviar_notificacion
 from .models import Empleado
 from .utils import enviar_correo
+from rest_framework.permissions import IsAuthenticated
 
 class EmpleadoViewSet(viewsets.ModelViewSet):
     queryset = Empleado.objects.all()
     serializer_class = EmpleadoSerializer
+    permission_classes = [IsAuthenticated]
 
 class AvisoRRHHViewSet(viewsets.ModelViewSet):
     queryset = AvisoRRHH.objects.all()
