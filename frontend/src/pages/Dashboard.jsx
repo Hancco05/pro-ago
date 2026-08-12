@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import TareasList from '../components/TareasList';
+import EmpleadosList from '../components/EmpleadosList';  // Importar
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
@@ -64,6 +65,14 @@ const Dashboard = () => {
             </ul>
           )}
         </div>
+        {/* Sección de empleados */}
+      <div style={{ marginTop: '40px', borderTop: '2px solid #eee', paddingTop: '20px' }}>
+        <EmpleadosList />
+      </div>
+      </div>
+            {/* Sección de tareas */}
+      <div style={{ marginTop: '20px' }}>
+        <TareasList />
       </div>
     </div>
   );
