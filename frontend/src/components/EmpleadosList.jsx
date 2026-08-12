@@ -14,7 +14,7 @@ const EmpleadosList = () => {
       const res = await getEmpleados();
       setEmpleados(res.data);
       setError('');
-    } catch (err) {
+    } catch {
       setError('Error al cargar empleados');
     } finally {
       setCargando(false);
@@ -36,13 +36,8 @@ const EmpleadosList = () => {
     }
   };
 
-  const handleEdit = (empleado) => {
-    setEditando(empleado);
-  };
-
-  const handleCancelEdit = () => {
-    setEditando(null);
-  };
+  const handleEdit = (empleado) => setEditando(empleado);
+  const handleCancelEdit = () => setEditando(null);
 
   const handleSaveEdit = async (data) => {
     try {
@@ -60,7 +55,7 @@ const EmpleadosList = () => {
   return (
     <div>
       <h2>👥 Lista de Empleados</h2>
-      
+
       {/* Formulario para crear nuevo empleado */}
       <EmpleadoForm onSave={async (data) => {
         try {
@@ -71,40 +66,48 @@ const EmpleadosList = () => {
         }
       }} />
 
-      {/* Lista de empleados */}
-      <ul style={{ listStyle: 'none', padding: 0 }}>
-        {empleados.map(empleado => (
-          <li key={empleado.id} style={{
-            border: '1px solid #ddd',
-            marginBottom: '10px',
-            padding: '10px',
-            borderRadius: '5px'
-          }}>
-            {editando && editando.id === empleado.id ? (
-              <EmpleadoForm
-                initialData={editando}
-                onSave={handleSaveEdit}
-                onCancel={handleCancelEdit}
-                isEditing
-              />
-            ) : (
-              <>
-                <div>
-                  <strong>{empleado.nombre} {empleado.apellido}</strong>
-                </div>
-                <div>📧 {empleado.email}</div>
-                <div>🏢 {empleado.departamento || 'Sin departamento'}</div>
-                <div>📅 Contratado: {empleado.fecha_contratacion || 'No especificada'}</div>
-                <div>🏝️ Vacaciones: {empleado.dias_vacaciones} días</div>
-                <div style={{ marginTop: '8px' }}>
-                  <button onClick={() => handleEdit(empleado)}>Editar</button>
-                  <button onClick={() => handleDelete(empleado.id)} style={{ marginLeft: '8px', color: 'red' }}>Eliminar</button>
-                </div>
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
+      {/* Tabla de empleados */}
+      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <thead>
+          <tr style={{ background: '#f0f0f0' }}>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+            <th>Departamento</th>
+            <th>Vacaciones</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {empleados.map(emp => (
+            <tr key={emp.id} style={{ borderBottom: '1px solid #ddd' }}>
+              {editando && editando.id === emp.id ? (
+                <td colSpan="6" style={{ padding: '10px' }}>
+                  <EmpleadoForm
+                    initialData={editando}
+                    onSave={handleSaveEdit}
+                    onCancel={handleCancelEdit}
+                    isEditing
+                  />
+                </td>
+              ) : (
+                <>
+                  <td>{emp.nombre}</td>
+                  <td>{emp.apellido}</td>
+                  <td>{emp.email}</td>
+                  <td>{emp.departamento || '-'}</td>
+                  <td>{emp.dias_vacaciones}</td>
+                  <td>
+                    <button onClick={() => handleEdit(emp)}>Editar</button>
+                    <button onClick={() => handleDelete(emp.id)} style={{ marginLeft: '8px', color: 'red' }}>Eliminar</button>
+                  </td>
+                </>
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {empleados.length === 0 && <p>No hay empleados registrados.</p>}
     </div>
   );
 };
