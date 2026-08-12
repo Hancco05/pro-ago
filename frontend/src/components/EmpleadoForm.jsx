@@ -29,16 +29,25 @@ const EmpleadoForm = ({ initialData, onSave, onCancel, isEditing = false }) => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!form.nombre.trim() || !form.apellido.trim() || !form.email.trim()) {
-      alert('Nombre, apellido y email son obligatorios');
-      return;
-    }
-    onSave(form);
-    if (!isEditing) {
-      setForm({ nombre: '', apellido: '', email: '', departamento: '', fecha_contratacion: '', dias_vacaciones: 20 });
-    }
-  };
+  e.preventDefault();
+  // Validación: todos los campos excepto departamento son obligatorios
+  if (!form.nombre.trim() || !form.apellido.trim() || !form.email.trim() || !form.fecha_contratacion) {
+    alert('Nombre, apellido, email y fecha de contratación son obligatorios');
+    return;
+  }
+  onSave(form);
+  if (!isEditing) {
+    // Limpiar formulario después de guardar (solo en modo creación)
+    setForm({ 
+      nombre: '', 
+      apellido: '', 
+      email: '', 
+      departamento: '', 
+      fecha_contratacion: '', 
+      dias_vacaciones: 20 
+    });
+  }
+};
 
   return (
     <form onSubmit={handleSubmit} style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ccc', borderRadius: '8px' }}>
@@ -47,8 +56,11 @@ const EmpleadoForm = ({ initialData, onSave, onCancel, isEditing = false }) => {
         <input type="text" name="apellido" placeholder="Apellido" value={form.apellido} onChange={handleChange} required />
         <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} required />
         <input type="text" name="departamento" placeholder="Departamento" value={form.departamento} onChange={handleChange} />
-        <input type="date" name="fecha_contratacion" value={form.fecha_contratacion} onChange={handleChange} />
-        <input type="number" name="dias_vacaciones" placeholder="Días de vacaciones" value={form.dias_vacaciones} onChange={handleChange} min="0" />
+        <input type="date" 
+          name="fecha_contratacion"   // <-- Importante: debe coincidir con el estado
+          value={form.fecha_contratacion} 
+          onChange={handleChange} 
+        /><input type="number" name="dias_vacaciones" placeholder="Días de vacaciones" value={form.dias_vacaciones} onChange={handleChange} min="0" />
       </div>
       <div style={{ marginTop: '10px' }}>
         <button type="submit">{isEditing ? 'Actualizar' : 'Crear empleado'}</button>
