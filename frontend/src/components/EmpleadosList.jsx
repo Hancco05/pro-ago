@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getEmpleados, deleteEmpleado, updateEmpleado } from '../services/empleadoService';
+import { getEmpleados, createEmpleado, updateEmpleado, deleteEmpleado } from '../services/empleadoService';
 import EmpleadoForm from './EmpleadoForm';
 
 const EmpleadosList = () => {
