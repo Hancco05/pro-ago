@@ -1,6 +1,6 @@
-import { useAuth } from '../context/AuthContext';
-import EmpleadosList from '../components/EmpleadosList';
-import TareasList from '../components/TareasList';
+import { useAuth } from '../components/AuthContext';
+import EmpleadosList from '../context/EmpleadosList';
+import TareasList from '../context/TareasList';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
